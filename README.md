@@ -7,7 +7,7 @@
 This Node provides access to the MENNEKES AMTRON XTRA and PREMIUM models. These wallboxes contain the so called HCC3 controller, which can be connected to a local network via Ethernet or (depending on the device model) WiFi.
 
 ## Configure Wallbox
-The AMTRON has to run software version 1.13 or newer and the Modbus TCP interface has to be enabled first. To do so, open the AMTRON Service Interface at http://<AMTRON-IP-Address>:25000/ and log in with the installation PIN. Switch to the installation settings page and enable the Modbus TCP option.
+The AMTRON has to run software version 1.13 or newer and the Modbus TCP interface has to be enabled first. To do so, open the AMTRON Service Interface at http://AMTRON-IP-Address:25000/ and log in with the installation PIN. Switch to the installation settings page and enable the Modbus TCP option.
 
 ## Add this Node to Node-RED
 

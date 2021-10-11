@@ -1,0 +1,112 @@
+<script type="text/javascript">
+    RED.nodes.registerType('amtron-in',{
+        category: 'network',
+        color: '#1DB5E9',
+        defaults: {
+            name: { value: "AMTRON in" },
+            ip: { value: "", required: true, validate: RED.validators.regex(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/) },
+            register: { value: "", required: true }
+        },
+        inputs: 1,
+        outputs: 1,
+        align: 'left',
+        icon: "fa-charging-station-regular.svg",
+        label: function() {
+            return this.name || "AMTRON in";
+        },
+        paletteLabel: 'AMTRON in',
+        oneditprepare: function() {
+            $("#node-input-register").typedInput({
+                types: [
+                    {
+                        value: "register",
+                        options: [
+                            // Value Naming Structure, '_' seperated:
+                            // Function Code (Coil, DiscreteInput, HoldingRegister, InputRegister), Hexadecimal Address,
+                            // Data Type (if larger than 16 Bit, multiple registers values will be read and combined.)
+
+                            // Coil Register (Read/Write)
+                            { value: "C_0x0108_BOOL", label: "Reboot AMTRON (reads always 0)" },
+
+                            // Discrete Inputs (Read)
+                            { value: "DI_0x0200_BOOL", label: "Digital Input: Error Input Active" },
+                            { value: "DI_0x0201_BOOL", label: "Digital Input: Mirror Contact Active" },
+                            { value: "DI_0x0202_BOOL", label: "Digital Input: Socket Locking Active" },
+                            { value: "DI_0x0203_BOOL", label: "Digital Output: Shunt Trip Active" },
+                            { value: "DI_0x0204_BOOL", label: "Digital Output: Contactor open (0) or closed (1)" },
+                            { value: "DI_0x0205_BOOL", label: "Digital Output: Socket Locking Active" },
+                            { value: "DI_0x0206_BOOL", label: "Temperature Sensor Installed" },
+                            { value: "DI_0x0207_BOOL", label: "Local Fuses Installed" },
+                            { value: "DI_0x0208_BOOL", label: "Energy Manager Installed" },
+                            { value: "DI_0x0209_BOOL", label: "External Tariff Switch Connected" },
+                            { value: "DI_0x020A_BOOL", label: "Monitoring Relay Wired to 1 Phase Only" },
+                            { value: "DI_0x020B_BOOL", label: "RFID Authorization Enabled" },
+                            { value: "DI_0x020C_BOOL", label: "Power Fail Continue Enabled" },
+                            { value: "DI_0x020D_BOOL", label: "Autostart Charging Enabled" },
+                            { value: "DI_0x020E_BOOL", label: "Stop Button Enabled" },
+                            { value: "DI_0x020F_BOOL", label: "Color Schema blue (0) or green (1)" },
+                            { value: "DI_0x0210_BOOL", label: "RFID Beep Enabled" },
+                            { value: "DI_0x0211_BOOL", label: "WLAN Communication Enabled" },
+                            { value: "DI_0x0212_BOOL", label: "Currently Summertime Active" },
+                            { value: "DI_0x0213_BOOL", label: "EV Wake-Up Enabled" },
+
+                            // Input Registers (Read)
+                            { value: "IR_0x0300_SINT16", label: "HMI Temperature Internal [°C]" },
+                            { value: "IR_0x0301_SINT16", label: "HMI Temperature External [°C]" },
+                            { value: "IR_0x0302_UINT16", label: "CP State Illegal/A1/A2/B1/B2/C1/C2/D1/D2" },
+                            { value: "IR_0x0303_UINT16", label: "PP State Illegal/Open/13A/20A/32A" },
+                            { value: "IR_0x0304_UINT16", label: "HCC3 Error Code (see documentation)" },
+                            { value: "IR_0x0305_UINT16", label: "State Idle/Authorize/Connect/Charging/Paused/Terminated/Error" },
+                            { value: "IR_0x0306_UINT16", label: "Operation Mode Remote(1)/Time/External" },
+                            { value: "IR_0x0307_UINT16", label: "Connector Type Unknown/Cable1/Cable2/Shutter/FlipTop" },
+                            { value: "IR_0x0308_UINT16", label: "Number of Phases Unknown (0)/One (1)/Three (3)" },
+                            { value: "IR_0x0309_UINT16", label: "AMTRON Rated Current [A]" },
+                            { value: "IR_0x030A_UINT16", label: "Installation Current [A]" },
+                            { value: "IR_0x030B_UINT32", label: "Serial Number" },
+                            { value: "IR_0x030D_UINT32", label: "Charging Session Meter Count [Wh]" },
+                            { value: "IR_0x030F_UINT32", label: "Actual Power Consumption [W]" },
+                            { value: "IR_0x0311_ASCII12", label: "Wallbox Name" },
+                            { value: "IR_0x031D_UINT16", label: "Maximum Current Tariff 1 [A]" },
+                            { value: "IR_0x031E_UINT16", label: "Start Hour Tariff 1" },
+                            { value: "IR_0x031F_UINT16", label: "Start Minute Tariff 1" },
+                            { value: "IR_0x0320_UINT16", label: "Price Tariff 1 [1/10 Eurocent]" },
+                            { value: "IR_0x0321_UINT16", label: "Maximum Current Tariff 2 [A]" },
+                            { value: "IR_0x0322_UINT16", label: "Start Hour Tariff 2" },
+                            { value: "IR_0x0323_UINT16", label: "Start Minute Tariff 2" },
+                            { value: "IR_0x0324_UINT16", label: "Price Tariff 2 [1/10 Eurocent]" },
+                            { value: "IR_0x0325_UINT16", label: "Planned Minimum Current [A]" },
+                            { value: "IR_0x0326_UINT16", label: "Planned Maximum Current [A]" },
+                            { value: "IR_0x0327_UINT16", label: "Planned Minimum Power [W]" },
+                            { value: "IR_0x0328_UINT16", label: "Planned Maximum Power [W]" },
+
+                            // Holding Registers (Read/Write)
+                            { value: "HR_0x0400_UINT16", label: "Customer Current Limitation [A]" },
+                            { value: "HR_0x0401_UINT16", label: "Change Charge State (reads always 0)" },
+                        ]
+                    }
+                ]
+            })
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="amtron-in">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-ip"><i class="fa fa-location-arrow"></i> IP Address</label>
+        <input type="text" id="node-input-ip" placeholder="192.168.0.100">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-register"><i class="fa fa-table"></i> Register</label>
+        <input type="text" id="node-input-register">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="amtron-in">
+    <p>Creates/overwrites <code>msg.payload</code> from a value, received via Modbus TCP from an AMTRON car charging wallbox.</p>
+</script>

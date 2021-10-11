@@ -1,0 +1,61 @@
+<script type="text/javascript">
+    RED.nodes.registerType('amtron-out',{
+        category: 'network',
+        color: '#1DB5E9',
+        defaults: {
+            name: { value: "AMTRON out" },
+            ip: { value: "", required: true, validate: RED.validators.regex(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/) },
+            register: { value: "", required: true }
+        },
+        inputs: 1,
+        outputs: 0,
+        align: 'left',
+        icon: "fa-charging-station-regular.svg",
+        label: function() {
+            return this.name || "AMTRON out";
+        },
+        paletteLabel: 'AMTRON out',
+        oneditprepare: function() {
+            $("#node-input-register").typedInput({
+                types: [
+                    {
+                        value: "register",
+                        options: [
+                            // Value Naming Structure, '_' seperated:
+                            // Function Code (Coil, DiscreteInput, HoldingRegister, InputRegister), Hexadecimal Address,
+                            // Data Type (if larger than 16 Bit, multiple registers values will be read and combined.)
+
+                            // Coil Register (Read/Write)
+                            { value: "C_0x0108_BOOL", label: "Setting to 1, Triggers a Reboot of the AMTRON" },
+
+                            // Holding Registers (Read/Write)
+                            { value: "HR_0x0400_UINT16", label: "Set Customer Current Limitation (0, 6, 7 .. 32) [A]" },
+                            { value: "HR_0x0401_UINT16", label: "Pause (1)/Continue (2)/Terminate (3)/Start (4) Charging" },
+                        ]
+                    }
+                ]
+            })
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="amtron-out">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-ip"><i class="fa fa-location-arrow"></i> IP Address</label>
+        <input type="text" id="node-input-ip" placeholder="192.168.0.100">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-register"><i class="fa fa-table"></i> Register</label>
+        <input type="text" id="node-input-register">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="amtron-out">
+    <p>Sends <code>msg.payload</code> via Modbus TCP to an AMTRON car charging wallbox.</p>
+</script>

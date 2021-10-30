@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-amtron-wallbox",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Contains nodes to control a MENNEKES AMTRON car charging wallbox.",
   "dependencies": {
     "modbus-serial": ">8.0.1"
